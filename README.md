@@ -107,7 +107,7 @@ src/main/java/com/nova/coffee
 
 ## 当前刻意简化
 
-- 目前只有 `product` 模块先接入了 MyBatis-Plus，其他模块仍保留内存仓储，便于逐步学习
+- 目前 `product / cart / order` 已接入 MyBatis-Plus，其他模块仍保留内存仓储，便于逐步学习
 - MQ 当前默认打印日志模拟投递
 - 多租户先演示“共享库共享表 + tenantId”的上下文设计思路
 - 认证先使用固定演示用户，便于快速体验完整链路
@@ -162,7 +162,7 @@ mysql -uroot -proot nova_lite < doc/sql/init.sql
 
 后续如果你认可这套风格，我可以继续帮你把它升级到：
 
-- 购物车、订单、支付表的 MyBatis-Plus 落库
+- 支付表的 MyBatis-Plus 落库
 - Redis 缓存与购物车缓存模型
 - 购物车真实增删改
 - 支付下单与回调链路

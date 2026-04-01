@@ -65,6 +65,31 @@ public class CoffeeOrder {
         );
     }
 
+    /**
+     * 从持久化层重建聚合。
+     */
+    public static CoffeeOrder rebuild(
+        String orderNo,
+        String tenantId,
+        String productCode,
+        String productName,
+        int quantity,
+        BigDecimal totalAmount,
+        LocalDateTime createdTime,
+        OrderStatus status
+    ) {
+        return new CoffeeOrder(
+            orderNo,
+            tenantId,
+            productCode,
+            productName,
+            quantity,
+            totalAmount,
+            createdTime,
+            status
+        );
+    }
+
     public void markPaid() {
         if (status != OrderStatus.CREATED) {
             throw new BizException("只有已创建订单可以支付");
