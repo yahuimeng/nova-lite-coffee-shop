@@ -61,7 +61,7 @@ src/main/java/com/nova/coffee
     │   ├── domain
     │   ├── infrastructure
     │   └── interfaces
-    └── order
+    ├── order
         ├── application
         ├── domain
         ├── infrastructure
@@ -95,6 +95,7 @@ src/main/java/com/nova/coffee
 - 创建订单与查询订单
 - 查询订单对应的支付记录
 - 查询可用优惠券
+- 验证 MySQL、Redis、Redisson 基础连通性
 - `Result<T>` 统一响应体
 - 业务异常与全局异常处理
 - 基于请求头的租户上下文提取
@@ -106,7 +107,7 @@ src/main/java/com/nova/coffee
 
 ## 当前刻意简化
 
-- 持久层使用内存仓储，便于先专注理解分层、模块边界与新语法
+- 目前只有 `product` 模块先接入了 MyBatis-Plus，其他模块仍保留内存仓储，便于逐步学习
 - MQ 当前默认打印日志模拟投递
 - 多租户先演示“共享库共享表 + tenantId”的上下文设计思路
 - 认证先使用固定演示用户，便于快速体验完整链路
@@ -130,6 +131,20 @@ src/main/java/com/nova/coffee
 mvn spring-boot:run
 ```
 
+## 本地中间件
+
+先启动 MySQL 和 Redis：
+
+```bash
+docker compose -f docker/docker-compose.yml up -d mysql redis
+```
+
+再执行初始化 SQL：
+
+```bash
+mysql -uroot -proot nova_lite < doc/sql/init.sql
+```
+
 ## 推荐体验顺序
 
 1. 调用 `POST /api/system/auth/token` 获取测试令牌
@@ -138,6 +153,7 @@ mvn spring-boot:run
 4. 带上 `X-Tenant-Id: demo-tenant` 和 token 调用 `POST /api/orders`
 5. 使用返回的 `orderNo` 调用 `GET /api/orders/{orderNo}` 和 `GET /api/payments/orders/{orderNo}`
 6. 调用 `GET /api/promotions/coupons` 查看营销模块入口
+7. 调用 `GET /api/system/infra/status` 验证 MySQL、Redis、Redisson 是否已经连通
 
 ## 默认请求头
 
@@ -146,8 +162,8 @@ mvn spring-boot:run
 
 后续如果你认可这套风格，我可以继续帮你把它升级到：
 
-- MyBatis-Plus + MySQL
-- Redis + Redisson
+- 购物车、订单、支付表的 MyBatis-Plus 落库
+- Redis 缓存与购物车缓存模型
 - 购物车真实增删改
 - 支付下单与回调链路
 - 用户、门店、优惠券的数据库持久化

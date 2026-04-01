@@ -4,9 +4,30 @@ server:
 spring:
   application:
     name: nova-lite-coffee-shop
+  datasource:
+    url: jdbc:mysql://127.0.0.1:3306/nova_lite?useUnicode=true&characterEncoding=UTF-8&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: root
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  data:
+    redis:
+      host: 127.0.0.1
+      port: 6379
+      database: 0
+      timeout: 3s
   threads:
     virtual:
       enabled: false
+
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  global-config:
+    db-config:
+      id-type: auto
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0
 
 management:
   endpoints:
@@ -25,3 +46,7 @@ app:
     core-pool-size: 4
     max-pool-size: 8
     queue-capacity: 100
+  redisson:
+    address: redis://127.0.0.1:6379
+    password:
+    database: 0
