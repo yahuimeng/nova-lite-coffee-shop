@@ -1,0 +1,27 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: nova-lite-coffee-shop
+  threads:
+    virtual:
+      enabled: false
+
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+  endpoint:
+    health:
+      show-details: always
+
+app:
+  security:
+    jwt-secret: "coffee-shop-demo-secret-key-for-jwt-signing-please-change"
+    jwt-expire-seconds: 7200
+  async:
+    core-pool-size: 4
+    max-pool-size: 8
+    queue-capacity: 100
